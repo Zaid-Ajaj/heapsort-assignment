@@ -87,25 +87,6 @@ void swap(vector<int>& input, int i, int j)
 }
 
 
-int left_child_index(int parentIndex, int maxIndex)
-{
-    int leftChildIndex = 2 * parentIndex + 1;
-    if (leftChildIndex < 0 || leftChildIndex > maxIndex) {
-        return -1;
-    }
-    return leftChildIndex;
-}
-
-int right_child_index(int parentIndex, int maxIndex)
-{
-    int rightChildIndex = 2 * parentIndex + 2;
-    if (rightChildIndex < 0 || rightChildIndex > maxIndex) {
-        return -1;
-    }
-    return rightChildIndex;
-}
-
-
 int parent_index(vector<int>& xs, int childIndex, int maxIndex)
 {
     int parentIndex = (childIndex - 1) / 2;
@@ -180,7 +161,7 @@ int main()
     input.push_back(6);
     input.push_back(7);
     input.push_back(8);
-    
+
     cout << "Before:" << endl;
     for(int i = 0; i < input.size(); i++) {
         cout << "result[" << i << "] = " << input[i] << endl;
