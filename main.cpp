@@ -18,7 +18,7 @@ using namespace std;
 
 // Part 2
 //
-//
+// exercises
 // xs = [15, 40, 42, -15, 30, 35, 5]
 // Phase 1 - build_heap(xs)
 //  
@@ -47,37 +47,58 @@ using namespace std;
 //  -15  30  15    5
 
 // Phase 2
-// 
+//  [42, 40, 35, -15, 30, 15, 5]
 //           42
 //        /     \  
 //      40      35   
 //     / \     /  \  
 //  -15  30  15    5 
 // ===================
-//            42
-//        /      \  
-//      -15       35   
-//     /   \     /  \  
-//   40    30  15    5 
+//  [5, 40, 35, -15, 30, 15, 42]
+//           5
+//        /     \  
+//      40      35   
+//     / \     /  \  
+//  -15  30  15    42 
 // ===================
+//  [40, 5, 35, -15, 30, 15, 42]
+//           40
+//        /     \  
+//      5       35   
+//     / \     /  \  
+//  -15  30  15    42 
+// ===================
+//  [15, 5, 35, -15, 30, 40, 42]
+//           15
+//        /     \  
+//      5       35   
+//     / \     /  \  
+//  -15  30  40    42 
+// ===================
+//  [35, 5, 15, -15, 30, 40, 42]
+//           35
+//        /     \  
+//      5       15   
+//     / \     /  \  
+//  -15  30  40    42 
+// ===================
+//  [30, 5, 15, -15, 35, 40, 42]
+//           30
+//        /     \  
+//      5       15   
+//     / \     /  \  
+//  -15  35  40    42 
+// ===================
+//  [-15, 5, 15, 30, 35, 40, 42]
 //          -15
 //        /     \  
-//      42      35   
-//     /   \    /  \  
-//   40    30  15   5 
+//      5       15   
+//     / \     /  \  
+//  30  35  40    42 
 // ===================
-//          -15
-//        /     \  
-//      42        5   
-//     /   \    /  \  
-//   40    30  15   35 
-// ===================
-//          -15
-//        /     \  
-//      30       5   
-//     /  \     / \  
-//   40    42  15 35 
-// ===================
+
+// push_down and push_down take one path of the tree => O(log n)
+// build_heap and pick_heap go through all elements => O(n)
 
 void swap(vector<int>& input, int i, int j)
 {
@@ -108,6 +129,7 @@ void build_heap(vector<int>& input)
             continue;
         }
 
+        // push_up function as a while loop
         while (input[parentNodeIndex] < input[currentNodeIndex]) {
             swap(input, parentNodeIndex, currentNodeIndex);
             currentNodeIndex = parentNodeIndex;
@@ -120,21 +142,21 @@ void build_heap(vector<int>& input)
 
 void push_down(vector<int>& input, int maxIndex, int parent)
 {
-    int root = parent;
-    int leftChild = parent * 2 + 1;
-    int rightChild = parent * 2 + 2;
+    int rootIndex = parent;
+    int leftChildIndex = parent * 2 + 1;
+    int rightChildIndex = parent * 2 + 2;
 
-    if (leftChild < maxIndex && input[leftChild] > input[parent]) {
-        parent = leftChild;
+    if (leftChildIndex < maxIndex && input[leftChildIndex] > input[parent]) {
+        parent = leftChildIndex;
     } 
 
-    if (rightChild < maxIndex && input[rightChild] > input[parent]) {
-        parent = rightChild;
+    if (rightChildIndex < maxIndex && input[rightChildIndex] > input[parent]) {
+        parent = rightChildIndex;
     }
 
-    if (parent != root) {
-        // value has changed
-        swap(input, root, parent);
+    if (parent != rootIndex) {
+        // parent has changed
+        swap(input, rootIndex, parent);
         push_down(input, maxIndex, parent);
     }
 }
@@ -149,18 +171,27 @@ void pick_heap(vector<int>& input)
     }
 }
 
+
+void heap_sort(vector<int>& input)
+{
+    build_heap(input);
+    pick_heap(input);
+}
+
+
 int main()
 {
-    cout << "Up and running" << endl;
     vector<int> input;
+
     input.push_back(1);
     input.push_back(2);
+    input.push_back(6);
     input.push_back(3);
     input.push_back(4);
-    input.push_back(5);
-    input.push_back(6);
-    input.push_back(7);
     input.push_back(8);
+    input.push_back(5);
+    input.push_back(7);
+
 
     cout << "Before:" << endl;
     for(int i = 0; i < input.size(); i++) {
